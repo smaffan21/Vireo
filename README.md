@@ -1,78 +1,221 @@
-Vireo — Viral Video Generator (Hackathon MVP)
+# Image-to-Video Story Generator
 
-Vireo lets users instantly create TikTok/Reels-style videos from trending meme formats. Pick a trend, type a short idea prompt, and generate a short video with captions, trend music, and optional AI voiceover.
+Transform your images into captivating video stories with AI-powered generation. Upload 1-2 images, describe your story, and watch as AI creates a complete video narrative with script, scenes, voiceover, and final assembly.
 
-Demo priorities: speed, polish, and a magical feel. This repo includes a fast mode that overlays captions and voiceover on a pre-rendered base clip for sub-10s render times on modest CPU.
+## Features
 
-## Monorepo Layout
-- `frontend/` — Next.js + Tailwind + Framer Motion app (deploy to Vercel)
-- `backend/` — FastAPI app with GPT-4o, ElevenLabs, Pexels (optionally) + MoviePy/FFmpeg (deploy to Render/Fly/Heroku)
-- `assets/trends/` — Preloaded/generated trend base videos, music, and thumbnails (auto-generated at backend startup if missing)
+- **Image Upload**: Drag & drop 1-2 images for style reference
+- **AI Script Generation**: GPT-4o-mini creates compelling story scripts
+- **Scene Breakdown**: Automatic scene planning with detailed prompts
+- **Video Generation**: RunwayML Gen-2 creates individual scene clips
+- **Voice Synthesis**: ElevenLabs generates high-quality narration
+- **Video Assembly**: FFmpeg concatenates clips with audio and captions
+- **Style Customization**: Choose from 6 different video styles
+- **Real-time Preview**: See generated script and scene breakdown
+- **Download Ready**: Get your final video in MP4 format
 
-## Quick Start (Local)
+## Tech Stack
 
-### 1) Backend
-Requirements: Python 3.10+, FFmpeg installed (MoviePy uses it under the hood).
+- **Backend**: FastAPI, Python 3.8+
+- **Frontend**: Next.js, React, Framer Motion, Tailwind CSS
+- **AI Services**: OpenAI GPT-4o-mini, RunwayML Gen-2, ElevenLabs
+- **Video Processing**: FFmpeg
+- **Styling**: Tailwind CSS with custom animations
 
-1. Copy environment template and fill in keys as available:
+## Quick Start
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Node.js 16 or higher
+- FFmpeg installed on your system
+- API keys for OpenAI, RunwayML, and ElevenLabs
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Vireo
+   ```
+
+2. **Install FFmpeg**
+   ```bash
+   # Ubuntu/Debian
+   sudo apt update && sudo apt install ffmpeg
+   
+   # macOS
+   brew install ffmpeg
+   
+   # Windows
+   # Download from https://ffmpeg.org/download.html
+   ```
+
+3. **Backend Setup**
    ```bash
    cd backend
-   cp .env.example .env
-   # Edit .env to add keys: OPENAI_API_KEY, ELEVENLABS_API_KEY, PEXELS_API_KEY (optional)
-   ```
-2. Install dependencies and run:
-   ```bash
    pip install -r requirements.txt
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   cp .env.example .env
+   # Edit .env with your API keys
    ```
-3. On first start, backend will generate synthetic base assets in `assets/trends/` if missing (short vertical clips, simple music, thumbnails). This enables instant demo without external downloads. If you add your own assets, place them under `backend/assets/trends/` and update `app/trends.py`.
 
-API:
-- GET `http://localhost:8000/trends` — list of trends
-- POST `http://localhost:8000/generate-video` — body: `{ "trend_id": string, "user_prompt": string, "fast_mode": true }` → `{ "video_url": string }`
-
-### 2) Frontend
-Requirements: Node 18+.
-
-1. Configure API base URL (defaults to `http://localhost:8000`):
+4. **Frontend Setup**
    ```bash
    cd frontend
-   echo "NEXT_PUBLIC_API_BASE=http://localhost:8000" > .env.local
-   ```
-2. Install and run dev server:
-   ```bash
    npm install
+   ```
+
+5. **Start the Services**
+   ```bash
+   # Terminal 1 - Backend
+   cd backend
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   
+   # Terminal 2 - Frontend
+   cd frontend
    npm run dev
    ```
-3. Open `http://localhost:3000` in your browser.
 
-### Demo Flow
-1) Click a trend card like “I’m X, of course I Y”
-2) Enter a short idea prompt (e.g., “I’m a hackathon judge, of course I drink 5 coffees in a row.”)
-3) Click Generate → loading animation → the video plays with captions, music, and voiceover (if ElevenLabs key is set). A “Share to TikTok” button appears.
+6. **Open the Application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
 
-## Environment Variables
-Backend (`backend/.env`):
-- `OPENAI_API_KEY` — optional; enables GPT-4o script generation. Without it, a local heuristic template is used.
-- `ELEVENLABS_API_KEY` — optional; enables real voiceover. Without it, demo uses music-only or a synthesized placeholder.
-- `PEXELS_API_KEY` — optional; used for non-fast-mode stock footage.
+## API Keys Setup
 
-Frontend (`frontend/.env.local`):
-- `NEXT_PUBLIC_API_BASE` — backend base URL (e.g., `http://localhost:8000` or your Render URL)
+1. **OpenAI API Key**
+   - Visit https://platform.openai.com/api-keys
+   - Create a new API key
+   - Add to `.env`: `OPENAI_API_KEY=your_key_here`
 
-## Adding New Trends
-1. Add your base assets (vertical 1080×1920 MP4, music MP3, and a 16:9 or 1:1 thumbnail PNG/JPG) under `backend/assets/trends/<your_id>/`.
-2. Register the trend in `backend/app/trends.py` under `TRENDS` with:
-   - `id`, `title`, `template`, `description`
-   - filenames for `base_video`, `music`, `thumbnail`
-3. Restart the backend.
+2. **RunwayML API Key**
+   - Visit https://runwayml.com/
+   - Sign up and get your API key
+   - Add to `.env`: `RUNWAYML_API_KEY=your_key_here`
 
-## Deploy
-- Frontend: Deploy `frontend/` to Vercel. Set `NEXT_PUBLIC_API_BASE` to your backend URL.
-- Backend: Deploy `backend/` to Render/other. Ensure FFmpeg is available. Add env vars. Persistent storage is optional; outputs are saved under `/public/videos/`.
+3. **ElevenLabs API Key**
+   - Visit https://elevenlabs.io/
+   - Create an account and get your API key
+   - Add to `.env`: `ELEVENLABS_API_KEY=your_key_here`
 
-## Notes
-- Fast mode is on by default and overlays captions + voiceover over a short pre-rendered clip for lightning-fast results.
-- Non fast-mode that fetches stock footage via Pexels is scaffolded but not optimized for the hackathon demo timeframe.
+## Usage
+
+1. **Upload Images**: Drag & drop 1-2 images for style reference
+2. **Write Prompt**: Describe what your video should be about
+3. **Choose Style**: Select from 6 different video styles
+4. **Generate**: Click "Generate Story Video" and wait for processing
+5. **Review**: See the generated script and scene breakdown
+6. **Download**: Get your final video in MP4 format
+
+## Video Styles
+
+- **Cinematic**: Movie-like dramatic style
+- **Animation**: Animated cartoon style
+- **Futuristic**: Sci-fi futuristic style
+- **Documentary**: Realistic documentary style
+- **Artistic**: Creative artistic style
+- **Minimalist**: Clean minimalist style
+
+## Project Structure
+
+```
+Vireo/
+├── backend/
+│   ├── app/
+│   │   ├── main.py                 # FastAPI application
+│   │   └── services/
+│   │       ├── openai_client.py    # Script & scene generation
+│   │       ├── runway_client.py    # Video generation
+│   │       ├── elevenlabs_client.py # Voice synthesis
+│   │       └── video_assembler.py  # Video assembly
+│   ├── public/videos/              # Generated videos
+│   ├── temp/                       # Temporary files
+│   └── requirements.txt
+├── frontend/
+│   ├── components/
+│   │   ├── ImageUpload.jsx         # Image upload component
+│   │   ├── StyleSelector.jsx       # Style selection
+│   │   └── StoryGenerator.jsx      # Results display
+│   ├── pages/
+│   │   └── index.js                # Main application page
+│   └── package.json
+└── README.md
+```
+
+## API Endpoints
+
+- `POST /generate-story`: Generate a complete story video
+- `GET /story/{story_id}`: Get story generation status
+- `GET /styles`: Get available video styles
+- `GET /public/videos/{filename}`: Download generated videos
+
+## Development
+
+### Backend Development
+```bash
+cd backend
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Frontend Development
+```bash
+cd frontend
+npm run dev
+```
+
+### Testing
+```bash
+# Backend tests
+cd backend
+python -m pytest
+
+# Frontend tests
+cd frontend
+npm test
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **FFmpeg not found**
+   - Ensure FFmpeg is installed and in your PATH
+   - Test with: `ffmpeg -version`
+
+2. **API Key Errors**
+   - Verify all API keys are correctly set in `.env`
+   - Check API key permissions and quotas
+
+3. **Video Generation Fails**
+   - The system will use placeholder clips if RunwayML fails
+   - Check API quotas and network connectivity
+
+4. **Voice Synthesis Fails**
+   - ElevenLabs API key may be invalid or quota exceeded
+   - Videos will be generated without voiceover
+
+### Performance Tips
+
+- Use smaller images (max 2MB each) for faster processing
+- Keep prompts concise but descriptive
+- Monitor API usage to avoid rate limits
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the troubleshooting section
+- Review API documentation for each service
 
 

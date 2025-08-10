@@ -3,13 +3,57 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
+/* Custom CSS for Vireo */
 :root {
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  --gradient-glow: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
+}
+
+/* Logo and title container */
+.logo-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  justify-content: center;
+}
+
+.logo-title-container h1 {
+  margin-left: -10px;
+}
+
+/* Enhanced logo styling */
+.vireo-logo {
+  filter: 
+    brightness(1.2) 
+    contrast(1.3) 
+    drop-shadow(0 0 20px rgba(139, 92, 246, 0.5))
+    drop-shadow(0 0 40px rgba(59, 130, 246, 0.3));
+  transition: all 0.3s ease;
+  animation: logoFloat 6s ease-in-out infinite;
+  transform: scale(1.1);
+}
+
+.vireo-logo:hover {
+  filter: 
+    brightness(1.4) 
+    contrast(1.4) 
+    drop-shadow(0 0 30px rgba(139, 92, 246, 0.7))
+    drop-shadow(0 0 60px rgba(59, 130, 246, 0.5));
+  transform: scale(1.15);
+  animation-play-state: paused;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 * {
@@ -21,6 +65,30 @@ body {
   background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: white;
   overflow-x: hidden;
+}
+
+/* Heading styles with Poppins font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+}
+
+/* Specific heading weights */
+h1 {
+  font-weight: 800;
+}
+
+h2 {
+  font-weight: 700;
+}
+
+h3 {
+  font-weight: 600;
+}
+
+/* Body text with Inter font */
+p, span, div, button, input, textarea, label {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Custom scrollbar */
@@ -44,10 +112,9 @@ body {
 
 /* Glass morphism effect */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-dark {
@@ -57,38 +124,45 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* Gradient text */
+/* Gradient text effects */
 .gradient-text {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.3));
 }
 
 .gradient-text-secondary {
-  background: var(--gradient-secondary);
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-accent {
-  background: var(--gradient-accent);
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Animated gradients */
+/* Animated gradient */
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradientShift 3s ease infinite;
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Floating animation */
@@ -154,6 +228,27 @@ body {
   box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
 }
 
+/* Enhanced button hover effects */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-glow:hover::before {
+  left: 100%;
+}
+
 /* Card hover effects */
 .card-hover {
   @apply transition-all duration-300 transform hover:scale-105 hover:-translate-y-2;
@@ -184,10 +279,10 @@ body {
 
 /* Loading spinner */
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-left: 4px solid #667eea;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -204,20 +299,20 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: -1;
+  overflow: hidden;
+  z-index: 0;
 }
 
 .particle {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: rgba(102, 126, 234, 0.6);
+  width: 12px;
+  height: 12px;
+  background: rgba(139, 92, 246, 0.2);
   border-radius: 50%;
-  animation: particle-float 20s infinite linear;
+  animation: float 20s infinite linear;
 }
 
-@keyframes particle-float {
+@keyframes float {
   0% {
     transform: translateY(100vh) rotate(0deg);
     opacity: 0;
@@ -242,6 +337,21 @@ body {
   
   .btn-primary, .btn-secondary, .btn-accent {
     @apply px-4 py-2 text-sm;
+  }
+
+  .vireo-logo {
+    width: 200px !important;
+    height: 80px !important;
+  }
+  
+  .logo-title-container {
+    flex-direction: column;
+    gap: 0px;
+  }
+  
+  .logo-title-container h1 {
+    margin-left: 0px;
+    margin-top: -5px;
   }
 }
 

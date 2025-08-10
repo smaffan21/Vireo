@@ -8,4 +8,5 @@ Pillow<12,>=10.4.0
 starlette==0.37.2
 ujson==2.0.0
 fastapi==0.115.0
+python-multipart==0.0.6
 
