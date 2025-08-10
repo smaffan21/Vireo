@@ -83,8 +83,8 @@ export default function Home() {
             className="particle"
             style={{
               left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 20}s`,
-              animationDuration: `${15 + Math.random() * 10}s`
+              animationDelay: `${Math.random() * 30}s`,
+              animationDuration: `${20 + Math.random() * 15}s`
             }}
           />
         ))}

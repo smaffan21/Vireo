@@ -1,4 +1,7 @@
-# Image-to-Video Story Generator
+# Vireo: Image-to-Video Story Generator
+
+Developed for Hack-Nation's 2nd ever Global AI Hackathon. 
+
 
 Transform your images into captivating video stories with AI-powered generation. Upload 1-2 images, describe your story, and watch as AI creates a complete video narrative with script, scenes, voiceover, and final assembly.
 
@@ -20,7 +23,7 @@ Transform your images into captivating video stories with AI-powered generation.
 - **Frontend**: Next.js, React, Framer Motion, Tailwind CSS
 - **AI Services**: OpenAI GPT-4o-mini, RunwayML Gen-2, ElevenLabs
 - **Video Processing**: FFmpeg
-- **Styling**: Tailwind CSS with custom animations
+- **Styling**: Tailwind CSS 
 
 ## Quick Start
 
@@ -175,7 +178,7 @@ npm test
 
 ## Troubleshooting
 
-### Common Issues
+### A few common issues
 
 1. **FFmpeg not found**
    - Ensure FFmpeg is installed and in your PATH
@@ -198,24 +201,3 @@ npm test
 - Use smaller images (max 2MB each) for faster processing
 - Keep prompts concise but descriptive
 - Monitor API usage to avoid rate limits
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## Support
-
-For support and questions:
-- Create an issue in the repository
-- Check the troubleshooting section
-- Review API documentation for each service
-
-
